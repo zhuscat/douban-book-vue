@@ -33,41 +33,45 @@ export default {
   created() {
     // eslint-disable-next-line
     console.log('created');
+    const tag = this.$route.params.tag || '';
+    const page = this.$route.query.page ? this.$route.query.page - 1 : 0;
+    this.$store.dispatch('getAllBooks', {
+      tag,
+      page,
+    });
+    this.$store.dispatch('getAllTags');
   },
   beforeMount() {
-    // eslint-disable-next-line
-    this.current = this.$route.query.page ? this.$route.query.page - 1 : 0;
-    this.selected = this.$route.params.tag ? decodeURIComponent(this.$route.params.tag) : '';
   },
   mounted() {
     console.log('can i get route info');
     console.log(this.$route);
     // TODO: need to be improved
-    let booksEndpoint = '';
-    if (this.selected === '') {
-      booksEndpoint = 'http://localhost:3000/api/v2/books';
-    } else {
-      booksEndpoint = `http://localhost:3000/api/v2/books/${decodeURIComponent(this.selected)}`;
-    }
-    booksEndpoint += `?page=${this.current}`;
+    // let booksEndpoint = '';
+    // if (this.selected === '') {
+    //   booksEndpoint = 'http://localhost:3000/api/v2/books';
+    // } else {
+    //   booksEndpoint = `http://localhost:3000/api/v2/books/${decodeURIComponent(this.selected)}`;
+    // }
+    // booksEndpoint += `?page=${this.current}`;
 
-    fetch(booksEndpoint)
-      .then(res => res.json())
-      .then((json) => {
-        this.books = json.books;
-        this.total = json.total;
-      })
-      .catch(() => {
-        this.books = [];
-      });
-    fetch('http://localhost:3000/api/tags')
-      .then(res => res.json())
-      .then((json) => {
-        this.tags = json;
-      })
-      .catch(() => {
-        this.tags = [];
-      });
+    // fetch(booksEndpoint)
+    //   .then(res => res.json())
+    //   .then((json) => {
+    //     this.books = json.books;
+    //     this.total = json.total;
+    //   })
+    //   .catch(() => {
+    //     this.books = [];
+    //   });
+    // fetch('http://localhost:3000/api/tags')
+    //   .then(res => res.json())
+    //   .then((json) => {
+    //     this.tags = json;
+    //   })
+    //   .catch(() => {
+    //     this.tags = [];
+    //   });
   },
   beforeUpdate() {
     // eslint-disable-next-line
@@ -77,40 +81,37 @@ export default {
     // eslint-disable-next-line
     console.log('updated');
   },
-  data() {
-    return {
-      books: [],
-      tags: [],
-      selected: '',
-      current: 0,
-      total: 0,
-    };
+  computed: {
+    books() {
+      return this.$store.state.books.items;
+    },
+    total() {
+      return this.$store.state.books.total;
+    },
+    tags() {
+      return this.$store.state.tags.items;
+    },
+    current() {
+      return this.$store.getters.current;
+    },
+    selected() {
+      return this.$store.state.books.selected;
+    },
   },
   watch: {
-    $route(to, from) {
-      console.log(to);
-      console.log(from);
-      let booksEndpoint = '';
-      if (to.params.tag) {
-        booksEndpoint = `http://localhost:3000/api/v2/books/${decodeURIComponent(to.params.tag)}`;
-      } else {
-        booksEndpoint = 'http://localhost:3000/api/v2/books';
-      }
+    $route(to) {
+      const tag = to.params.tag || '';
       const page = to.query.page ? to.query.page - 1 : 0;
-      booksEndpoint += `?page=${page}`;
-      this.current = page;
-      this.selected = to.params.tag ? to.params.tag : '';
-
-      fetch(booksEndpoint)
-        .then(res => res.json())
-        .then((json) => {
-          this.books = json.books;
-          this.total = json.total;
-        })
-        .catch(() => {
-          this.books = [];
-        });
+      this.$store.dispatch('getAllBooks', {
+        page,
+        tag,
+      });
     },
+  },
+  beforeRouteEnter(to, from, next) {
+    next(() => {
+      console.log('beforeRouteEnter');
+    });
   },
 };
 </script>

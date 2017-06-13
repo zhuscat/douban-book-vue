@@ -23,12 +23,11 @@
         :rating="item.rating"
         :title="item.title"
         :author="item.author"
-        @click="test"
       />
     </div>
     <div style="text-align: center;">
       <paginator
-        :current="current + 1"
+        :current="current"
         :total="total"
         :page-size="20"
         @change="paginationChange"
@@ -51,12 +50,9 @@ export default {
     Tag,
     Paginator,
   },
+  beforeUpdate() {
+  },
   methods: {
-    test(event, a, b) {
-      console.log(`event is ${event}`);
-      console.log(`a is ${a}`);
-      console.log(`b is ${b}`);
-    },
     paginationChange(page) {
       router.push({ query: { page } });
     },

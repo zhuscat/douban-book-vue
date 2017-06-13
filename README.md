@@ -5,9 +5,11 @@
 ## Learning Plan
 
 1. Vue
-2. Vuex
-3. ~~Vue Router~~
-4. SSR
+2. ~~ 学习并尝试使用 Vuex~~
+3. ~~ 学习并尝试使用 Vue Router~~
+4. 学习并尝试使用 SSR
+5. 优化代码
+6. 增加功能
 
 ## Build Setup
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="book-item" @click="click">
+  <div class="book-item">
     <div class="book-item__cover">
       <img :src="picUrl" :alt="title" />
     </div>
@@ -15,11 +15,6 @@
 export default {
   name: 'book-item',
   props: ['picUrl', 'rating', 'title', 'author'],
-  methods: {
-    click() {
-      this.$emit('click', 'a', 'b');
-    },
-  },
 };
 </script>
 
