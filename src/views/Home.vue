@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex';
 import Tag from '@/components/Tag';
 import BookList from '@/components/BookList';
 import Paginator from '@/components/Paginator';
@@ -82,21 +83,13 @@ export default {
     console.log('updated');
   },
   computed: {
-    books() {
-      return this.$store.state.books.items;
-    },
-    total() {
-      return this.$store.state.books.total;
-    },
-    tags() {
-      return this.$store.state.tags.items;
-    },
-    current() {
-      return this.$store.getters.current;
-    },
-    selected() {
-      return this.$store.state.books.selected;
-    },
+    ...mapState({
+      books: state => state.books.items,
+      total: state => state.books.total,
+      tags: state => state.tags.items,
+      selected: state => state.books.selected,
+    }),
+    ...mapGetters(['current']),
   },
   watch: {
     $route(to) {

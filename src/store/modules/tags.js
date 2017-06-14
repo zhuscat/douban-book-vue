@@ -12,12 +12,13 @@ const state = {
 const actions = {
   getAllTags({ commit }) {
     commit(types.FETCH_TAGS_REQUEST);
-    tag.getTags().then(({ response, error }) => {
-      if (error) {
+    tag.getTags()
+      .then((tags) => {
+        commit(types.FETCH_TAGS_SUCCESS, { tags });
+      })
+      .catch(() => {
         commit(types.FETCH_TAGS_FAILURE);
-      }
-      commit(types.FETCH_TAGS_SUCCESS, { response });
-    });
+      });
   },
 };
 
@@ -25,10 +26,9 @@ const mutations = {
   [types.FETCH_TAGS_REQUEST](state) {
     state.isFetching = true;
   },
-  [types.FETCH_TAGS_SUCCESS](state, { response }) {
-    console.log('成功获取 tags');
+  [types.FETCH_TAGS_SUCCESS](state, { tags }) {
     state.isFetching = false;
-    state.items = response;
+    state.items = tags;
   },
   [types.FETCH_TAGS_FAILURE](state) {
     state.isFetching = false;

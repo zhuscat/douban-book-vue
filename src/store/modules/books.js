@@ -23,12 +23,13 @@ const actions = {
       page,
       tag,
     });
-    return book.getAllBooks(page, tag).then(({ response, error }) => {
-      if (error) {
+    return book.getAllBooks(page, tag)
+      .then((booksObj) => {
+        commit(types.FETCH_BOOKS_SUCCESS, { booksObj });
+      })
+      .catch(() => {
         commit(types.FETCH_BOOKS_FAILURE);
-      }
-      commit(types.FETCH_BOOKS_SUCCESS, { response });
-    });
+      });
   },
 };
 
@@ -41,9 +42,9 @@ const mutations = {
   [types.FETCH_BOOKS_FAILURE](state) {
     state.isFetching = false;
   },
-  [types.FETCH_BOOKS_SUCCESS](state, { response }) {
-    state.items = response.books;
-    state.total = response.total;
+  [types.FETCH_BOOKS_SUCCESS](state, { booksObj }) {
+    state.items = booksObj.books;
+    state.total = booksObj.total;
   },
 };
 
