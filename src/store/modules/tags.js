@@ -4,11 +4,6 @@ import * as types from '../mutation-types';
 /* eslint no-param-reassign: "off" */
 /* eslint no-shadow: "off" */
 
-const state = {
-  isFetching: false,
-  items: [],
-};
-
 const actions = {
   getAllTags({ commit }) {
     commit(types.FETCH_TAGS_REQUEST);
@@ -37,7 +32,10 @@ const mutations = {
 };
 
 export default {
-  state,
+  state: () => ({
+    isFetching: false,
+    items: [],
+  }),
   actions,
   mutations,
 };

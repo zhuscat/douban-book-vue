@@ -37,10 +37,9 @@
 </template>
 
 <script>
-import BookItem from './BookItem';
-import Tag from './Tag';
-import Paginator from './Paginator';
-import router from '../router';
+import BookItem from './BookItem.vue';
+import Tag from './Tag.vue';
+import Paginator from './Paginator.vue';
 
 export default {
   name: 'book-list',
@@ -54,7 +53,7 @@ export default {
   },
   methods: {
     paginationChange(page) {
-      router.push({ query: { page } });
+      this.$router.push({ query: { page } });
     },
   },
 };

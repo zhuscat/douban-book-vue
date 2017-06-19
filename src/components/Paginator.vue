@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import { calcPageList } from '@/utils/calc-page-list';
-import PaginationItem from './PaginationItem';
+import { calcPageList } from '../utils/calc-page-list';
+import PaginationItem from './PaginationItem.vue';
 
 export default {
   name: 'paginator',

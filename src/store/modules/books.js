@@ -4,14 +4,6 @@ import * as types from '../mutation-types';
 /* eslint no-param-reassign: "off" */
 /* eslint no-shadow: "off" */
 
-const state = {
-  isFetching: false,
-  items: [],
-  page: 0,
-  total: 0,
-  selected: '',
-};
-
 const getters = {
   isFetching: state => state.isFetching,
   current: state => state.page + 1,
@@ -50,7 +42,13 @@ const mutations = {
 
 
 const books = {
-  state,
+  state: () => ({
+    isFetching: false,
+    items: [],
+    page: 0,
+    total: 0,
+    selected: '',
+  }),
   getters,
   actions,
   mutations,
