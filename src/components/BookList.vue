@@ -14,7 +14,14 @@
         :selected="decodeURIComponent(tag._id) === decodeURIComponent(selected)"
       />
     </div>
-    <div class="db-sort-container"></div>
+    <div class="db-sort-container">
+      <router-link :class="ratingClass" :to="ratingLocation">
+        评分
+      </router-link>
+      <router-link :class="ratingPeopleClass" :to="ratingPeopleLocation">
+        人数
+      </router-link>
+    </div>
     <div class="db-book-container">
       <book-item
         v-for="(item, index) in books"
@@ -43,17 +50,45 @@ import Paginator from './Paginator.vue';
 
 export default {
   name: 'book-list',
-  props: ['books', 'tags', 'current', 'total', 'selected'],
+  props: ['books', 'tags', 'current', 'total', 'selected', 'sortType'],
   components: {
     BookItem,
     Tag,
     Paginator,
   },
-  beforeUpdate() {
-  },
   methods: {
     paginationChange(page) {
-      this.$router.push({ query: { page } });
+      this.$router.push({ query: Object.assign({}, this.$route.query, { page }) });
+    },
+  },
+  computed: {
+    ratingLocation() {
+      return {
+        path: this.$route.path,
+        query: Object.assign({}, this.$route.query, {
+          sort: 'rating',
+        }),
+      };
+    },
+    ratingPeopleLocation() {
+      return {
+        path: this.$route.path,
+        query: Object.assign({}, this.$route.query, {
+          sort: 'ratingPeople',
+        }),
+      };
+    },
+    ratingClass() {
+      return {
+        'db-sort-tag': true,
+        'db-sort-tag--active': this.sortType === 'rating',
+      };
+    },
+    ratingPeopleClass() {
+      return {
+        'db-sort-tag': true,
+        'db-sort-tag--active': this.sortType === 'ratingPeople',
+      };
     },
   },
 };
@@ -75,6 +110,21 @@ export default {
   margin-bottom: 32px;
   display: flex;
   justify-content: flex-end;
+}
+
+.db-sort-tag {
+  font-size: 12px;
+  color: #999;
+  margin-right: 18px;
+  cursor: pointer;
+
+  &:hover {
+    color: #666;
+  }
+}
+
+.db-sort-tag--active {
+  color: #00b51d;
 }
 
 .db-tag-container {

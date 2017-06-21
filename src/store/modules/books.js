@@ -10,12 +10,13 @@ const getters = {
 };
 
 const actions = {
-  getAllBooks({ commit }, { page = 0, tag = '' } = {}) {
+  getAllBooks({ commit }, { page = 0, tag = '', sortType = 'rating' } = {}) {
     commit(types.FETCH_BOOKS_REQUEST, {
       page,
       tag,
+      sortType,
     });
-    return book.getAllBooks(page, tag)
+    return book.getAllBooks(page, tag, sortType)
       .then((booksObj) => {
         commit(types.FETCH_BOOKS_SUCCESS, { booksObj });
       })
@@ -26,10 +27,11 @@ const actions = {
 };
 
 const mutations = {
-  [types.FETCH_BOOKS_REQUEST](state, { page, tag }) {
+  [types.FETCH_BOOKS_REQUEST](state, { page, tag, sortType = 'rating' }) {
     state.isFetching = true;
     state.page = page;
     state.selected = tag;
+    state.sortType = sortType;
   },
   [types.FETCH_BOOKS_FAILURE](state) {
     state.isFetching = false;
@@ -48,6 +50,7 @@ const books = {
     page: 0,
     total: 0,
     selected: '',
+    sortType: 'rating',
   }),
   getters,
   actions,

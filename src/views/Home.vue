@@ -5,6 +5,7 @@
     :current="current"
     :total="total"
     :selected="selected"
+    :sortType="sortType"
   />
 </template>
 
@@ -24,9 +25,11 @@ export default {
   asyncData({ store, route }) {
     const tag = route.params.tag || '';
     const page = route.query.page ? route.query.page - 1 : 0;
+    const sortType = route.query.sort ? route.query.sort : 'rating';
     const getBooksPromise = store.dispatch('getAllBooks', {
       tag,
       page,
+      sortType,
     });
     const getTagsPromise = store.dispatch('getAllTags');
     return Promise.all([getBooksPromise, getTagsPromise]);
@@ -57,6 +60,7 @@ export default {
       total: state => state.books.total,
       tags: state => state.tags.items,
       selected: state => state.books.selected,
+      sortType: state => state.books.sortType,
     }),
     ...mapGetters(['current']),
   },
