@@ -42,14 +42,25 @@ export default {
         route: this.$route,
       });
     }
+    this.$bar.start();
+    this.dataPromise.then(() => {
+      this.$bar.finish();
+    }).catch(() => {
+      this.$bar.fail();
+    });
   },
   watch: {
     $route(to) {
       const { asyncData } = this.$options;
+      this.$bar.start();
       if (asyncData) {
         asyncData({
           store: this.$store,
           route: to,
+        }).then(() => {
+          this.$bar.finish();
+        }).catch(() => {
+          this.$bar.fail();
         });
       }
     },

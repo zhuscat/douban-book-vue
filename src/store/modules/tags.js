@@ -13,6 +13,7 @@ const actions = {
       })
       .catch(() => {
         commit(types.FETCH_TAGS_FAILURE);
+        return Promise.reject(new Error('failed to fetch tags'));
       });
   },
 };
